@@ -9,7 +9,7 @@ import Search from 'components/Icons/Search'
 
 import useUser from 'hooks/useUser'
 
-import { fetchLatestDevits } from 'firebase/client'
+import { listenLatestDevits } from 'firebase/client'
 
 import { colors } from 'styles/theme'
 
@@ -18,7 +18,11 @@ export default function HomePage() {
   const user = useUser()
 
   useEffect(() => {
-    user && fetchLatestDevits().then(setTimeline)
+    let unsubscribe
+    if (user) {
+      unsubscribe = listenLatestDevits(setTimeline)
+    }
+    return () => unsubscribe && unsubscribe()
   }, [user])
 
   return (

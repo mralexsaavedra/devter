@@ -1,15 +1,6 @@
 import firebase from 'firebase'
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyAfLB2G7-vz6l27-0MnIERBjMJi6mUb9Kw',
-  authDomain: 'devter-4828f.firebaseapp.com',
-  databaseURL: 'https://devter-4828f.firebaseio.com',
-  projectId: 'devter-4828f',
-  storageBucket: 'devter-4828f.appspot.com',
-  messagingSenderId: '921324974156',
-  appId: '1:921324974156:web:fc7912d6e3c8b8e9e5c4e9',
-  measurementId: 'G-38CRC77GKP',
-}
+const firebaseConfig = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG)
 
 !firebase.apps.length && firebase.initializeApp(firebaseConfig)
 
@@ -52,23 +43,36 @@ export const addDevit = ({ avatar, content, img, userId, userName }) => {
   })
 }
 
+const mapDevitFromFirebaseToDevitObject = (doc) => {
+  const data = doc.data()
+  const id = doc.id
+  const { createdAt } = data
+
+  return {
+    ...data,
+    id,
+    createdAt: +createdAt.toDate(),
+  }
+}
+
+export const listenLatestDevits = (callback) => {
+  return db
+    .collection('devits')
+    .orderBy('createdAt', 'desc')
+    .limit(20)
+    .onSnapshot(({ docs }) => {
+      const newDevits = docs.map(mapDevitFromFirebaseToDevitObject)
+      callback(newDevits)
+    })
+}
+
 export const fetchLatestDevits = () => {
   return db
     .collection('devits')
     .orderBy('createdAt', 'desc')
     .get()
     .then(({ docs }) => {
-      return docs.map((doc) => {
-        const data = doc.data()
-        const id = doc.id
-        const { createdAt } = data
-
-        return {
-          ...data,
-          id,
-          createdAt: +createdAt.toDate(),
-        }
-      })
+      return docs.map(mapDevitFromFirebaseToDevitObject)
     })
 }
 

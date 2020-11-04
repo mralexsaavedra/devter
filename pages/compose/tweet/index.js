@@ -40,7 +40,6 @@ export default function ComposeTweet() {
       const onProgress = () => {}
       const onError = () => {}
       const onComplete = () => {
-        console.log('onComplete')
         task.snapshot.ref.getDownloadURL().then(setImgURL)
       }
 
@@ -160,6 +159,7 @@ export default function ComposeTweet() {
 
         form {
           padding: 10px;
+          width: 100%;
         }
 
         img {
