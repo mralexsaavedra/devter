@@ -12,4 +12,4 @@ yarn dev
 
 Abre [http://localhost:3000](http://localhost:3000) y en tu navegador verás el resultado.
 
-**[👨‍🏫 Todas las clases disponibles en la rama principal.](https://github.com/midudev/curso-nextjs-twitter-clone/blob/master/README.md)**
+**[👨‍🏫 Todas las clases disponibles en esta lista de reproducción.](https://www.youtube.com/playlist?list=PLV8x_i1fqBw1VR86y4C72xMGJ8ifjBwJ6)**
